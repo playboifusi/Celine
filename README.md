@@ -1,4 +1,4 @@
 # Celine
 
 
-Celine, The Interactive pc checking tool
+Celine, The Interactive Pc Checking Tool

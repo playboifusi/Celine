@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// Celine 2024
 using System;
 using System.Drawing;
 using System.IO;

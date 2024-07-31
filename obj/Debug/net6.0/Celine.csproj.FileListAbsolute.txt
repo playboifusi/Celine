@@ -1,0 +1,17 @@
+C:\Users\fusi\Documents\GIT\Celine\bin\Debug\net6.0\Celine.exe
+C:\Users\fusi\Documents\GIT\Celine\bin\Debug\net6.0\Celine.deps.json
+C:\Users\fusi\Documents\GIT\Celine\bin\Debug\net6.0\Celine.runtimeconfig.json
+C:\Users\fusi\Documents\GIT\Celine\bin\Debug\net6.0\Celine.dll
+C:\Users\fusi\Documents\GIT\Celine\bin\Debug\net6.0\Celine.pdb
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.csproj.AssemblyReference.cache
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.AssemblyInfoInputs.cache
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.AssemblyInfo.cs
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.csproj.CoreCompileInputs.cache
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.dll
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\refint\Celine.dll
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.pdb
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.genruntimeconfig.cache
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\ref\Celine.dll
+C:\Users\fusi\Documents\GIT\Celine\bin\Debug\net6.0\Colorful.Console.dll
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.csproj.CopyComplete

@@ -1,7 +1,9 @@
 ﻿// Celine 2024
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Threading;
 using Console = Colorful.Console;
 
@@ -99,41 +101,78 @@ if (logSettings == "true")
     Console.WriteLine("[3] Exit", Color.BlueViolet);
     // Asks the user to input a number
     Console.Write("[Enter a number]: ", Color.BlueViolet);
-    string input = Console.ReadLine();
+    ConsoleKeyInfo input = Console.ReadKey();
 
     // If the user inputs 1 write "Starting common file check" and then asks "Would you check for release folders? (Y/N)"
-    if (input == "1")
+    if (input.KeyChar == '1')
     {
-        Console.WriteLine("[Starting common file check]", Color.BlueViolet);
-        Console.Write("[Would you check for release folders? (Y/N)]: ", Color.BlueViolet);
-        string input2 = Console.ReadLine();
+        Console.WriteLine("\n[Starting common file check]", Color.BlueViolet);
+        Console.Write("\n[Would you like check for release folders? (Y/N)]: ", Color.BlueViolet);
+        Console.ReadKey();
+        string input2 = Console.ReadLine(); // Assign the user's input to the input2 variable.
         // If the user inputs Y write "Checking for release folders" and then "Checking for deleted files"
-        if (input2 == "Y")
+        if (input2.ToLower() == "y")
         {
-            Console.WriteLine("[Checking for release folders]", Color.BlueViolet);
-            Console.WriteLine("[Checking for deleted files]", Color.BlueViolet);
+            Console.WriteLine("\n[Checking for release folders]", Color.BlueViolet);
+            Console.WriteLine("\n[Checking for deleted files]", Color.BlueViolet);
         }
         // If the user inputs N write "Checking for deleted files"
-        else if (input2 == "N")
+        else if (input2.ToLower() == "n")
         {
-            Console.WriteLine("[Checking for deleted files]", Color.BlueViolet);
+            Console.WriteLine("\n[Checking for deleted files]", Color.BlueViolet);
         }
         // If the user inputs anything else write "Invalid input"
         else
         {
-            Console.WriteLine("[Invalid input]", Color.Red);
+            Console.WriteLine("\n\n\n[Invalid input]", Color.Red);
         }
     }
     // checks 2 and 3 below
-    else if (input == "2")
+    else if (input.KeyChar == '2')
     {
         Console.WriteLine("[Starting tamper check]", Color.BlueViolet);
         // Perform tamper check logic here
     }
-    else if (input == "3")
+    else if (input.KeyChar == '3')
     {
         Console.WriteLine("[Exiting]", Color.BlueViolet);
         Environment.Exit(0);
+    }
+    else if (input.KeyChar == '4')
+    {
+        Console.WriteLine("\n[Please wait while BAM Tools Loads..]", Color.BlueViolet);
+        // Goes to this a github link and downloads the .txt file
+                string url = "https://raw.githubusercontent.com/playboifusi/Celine/main/dropper/files/FileDroppingTest.txt";
+        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string destinationFolder = Path.Combine(appDataPath, "celine-v1");
+        string destinationFile = Path.Combine(destinationFolder, "FileDroppingTest.txt");
+
+        try
+        {
+            // another celine-v1 integrity check
+            if (!Directory.Exists(destinationFolder))
+            {
+                Directory.CreateDirectory(destinationFolder);
+            }
+
+            // Download the file
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFile(url, destinationFile);
+            }
+
+            Console.WriteLine("[File downloaded successfully to " + destinationFile + "]", Color.BlueViolet);
+
+            // starts the new file in notepad.. FOR NOW because its a txt testing file
+            Process.Start("notepad.exe", destinationFile);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
+
+        
+        // Environment.Exit(0);
     }
     else
     {

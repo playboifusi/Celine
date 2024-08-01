@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using Console = Colorful.Console;
+using System.Net.Http;
 
 Console.Title = "Celine-v1";
 Console.WriteLine(@"
@@ -16,26 +17,38 @@ Console.WriteLine(@"
  ██████ ███████ ███████ ██ ██   ████ ███████ July 31st Build
                                                                                     
 ", Color.BlueViolet);
+        string versionUrl2 = "https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version2.txt";
+        string version = "0.0.1";
 
+        string latestVersion;
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                latestVersion = await client.GetStringAsync(versionUrl2);
+                latestVersion = latestVersion.Trim(); // Trim any extra whitespace or newline characters
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching latest version: {ex.Message}");
+                return;
+            }
+        }
 
+        Console.WriteLine($"Current version: {version}");
+        Console.WriteLine($"Latest version: {latestVersion}");
 
-
-
-// adds a version check. Version is on https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version.txt
-string versionUrl = "https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version.txt";
-// string versionPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\celine-v1\\version.txt";
-string version = "0.0.2";
-string latestVersion = new WebClient().DownloadString(versionUrl);
-
-// Adds version string and matches it with the github link. if it doesnt match, it will display a message.
- if (version != latestVersion)
-{
-    Console.WriteLine("[A new version of Celine is available. Please update to the latest version.]", Color.Red);
-    Console.ReadKey();
-    Environment.Exit(0);
- }
-
-Console.WriteLine("[Welcome! Please wait while our bootstrapper runs..]", Color.BlueViolet);
+        // Adds version string and matches it with the GitHub link. If it doesn't match, it will display a message.
+        if (version != latestVersion)
+        {;
+            Console.WriteLine("[A new version of Celine is available. Please update to the latest version.]", Color.Red);
+            Console.ResetColor();
+            Console.ReadKey();
+            Environment.Exit(0);
+        }
+        else
+        {
+            Console.WriteLine("[Welcome! Please wait while our bootstrapper runs..]", Color.BlueViolet);
 
 // checks if roaming has data folder
 if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\celine-v1"))
@@ -325,3 +338,6 @@ if (logSettings == "true")
 
     Console.ReadKey();
 }
+
+        }
+

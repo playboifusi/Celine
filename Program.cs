@@ -17,19 +17,23 @@ Console.WriteLine(@"
                                                                                     
 ", Color.BlueViolet);
 
+
+
+
+
 // adds a version check. Version is on https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version.txt
 string versionUrl = "https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version.txt";
 string versionPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\celine-v1\\version.txt";
-string version = "0.0.1";
+string version = "0.0.2";
 string latestVersion = new WebClient().DownloadString(versionUrl);
 
 // Adds version string and matches it with the github link. if it doesnt match, it will display a message.
-if (version != latestVersion)
-{
-    Console.WriteLine("[A new version of Celine is available. Please update to the latest version.]", Color.Red);
-    Console.ReadKey();
-    Environment.Exit(0);
-}
+// if (version != latestVersion)
+// {
+//     Console.WriteLine("[A new version of Celine is available. Please update to the latest version.]", Color.Red);
+//     Console.ReadKey();
+//     Environment.Exit(0);
+// }
 
 Console.WriteLine("[Welcome! Please wait while our bootstrapper runs..]", Color.BlueViolet);
 
@@ -233,37 +237,83 @@ if (logSettings == "true")
             Console.WriteLine("[SolaraB2 folder has not been detected on desktop]", Color.LimeGreen);
         }
 
-        
-        Console.WriteLine("\n[Please wait while BAM Tools Loads..]", Color.BlueViolet);
-        // Goes to this a github link and downloads the .txt file
-                string url = "https://raw.githubusercontent.com/playboifusi/Celine/main/dropper/files/FileDroppingTest.txt";
-        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        string destinationFolder = Path.Combine(appDataPath, "celine-v1");
-        string destinationFile = Path.Combine(destinationFolder, "FileDroppingTest.txt");
-
-        try
+        Console.WriteLine("[Would you like to download BAM Tools? (Y/N)]: ", Color.BlueViolet);
+        string input3 = Console.ReadLine(); // Assign the user's input to the input3 variable.
+        if (input3.ToLower() == "y")
         {
-            // another celine-v1 integrity check
-            if (!Directory.Exists(destinationFolder))
+            string url = "https://raw.githubusercontent.com/playboifusi/Celine/main/dropper/files/FileDroppingTest.txt";
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string destinationFolder = Path.Combine(appDataPath, "celine-v1");
+            string destinationFile = Path.Combine(destinationFolder, "FileDroppingTest.txt");
+
+            try
             {
-                Directory.CreateDirectory(destinationFolder);
-            }
+                // another celine-v1 integrity check
+                if (!Directory.Exists(destinationFolder))
+                {
+                    Directory.CreateDirectory(destinationFolder);
+                }
 
-            // Download the file
-            using (WebClient client = new WebClient())
+                // Download the file
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile(url, destinationFile);
+                }
+
+                Console.WriteLine("[File downloaded successfully to " + destinationFile + "]", Color.BlueViolet);
+
+                // 
+
+                // starts the new file in notepad.. FOR NOW because its a txt testing file
+                // Process.Start("notepad.exe", destinationFile);
+                // runs theh file
+                Process.Start(destinationFile);
+            }
+            catch (Exception ex)
             {
-                client.DownloadFile(url, destinationFile);
+                Console.WriteLine("An error occurred: " + ex.Message);
             }
-
-            Console.WriteLine("[File downloaded successfully to " + destinationFile + "]", Color.BlueViolet);
-
-            // starts the new file in notepad.. FOR NOW because its a txt testing file
-            // Process.Start("notepad.exe", destinationFile);
         }
-        catch (Exception ex)
+        else if (input3.ToLower() == "n")
         {
-            Console.WriteLine("An error occurred: " + ex.Message);
+            Console.WriteLine("[File download skipped]", Color.BlueViolet);
         }
+        else
+        {
+            Console.WriteLine("[Invalid input]", Color.Red);
+        }
+        // Console.WriteLine("\n[Please wait while BAM Tools Loads..]", Color.BlueViolet);
+        // // Goes to this a github link and downloads the .txt file
+        //         string url = "https://raw.githubusercontent.com/playboifusi/Celine/main/dropper/files/FileDroppingTest.txt";
+        // string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        // string destinationFolder = Path.Combine(appDataPath, "celine-v1");
+        // string destinationFile = Path.Combine(destinationFolder, "FileDroppingTest.txt");
+
+        // try
+        // {
+        //     // another celine-v1 integrity check
+        //     if (!Directory.Exists(destinationFolder))
+        //     {
+        //         Directory.CreateDirectory(destinationFolder);
+        //     }
+
+        //     // Download the file
+        //     using (WebClient client = new WebClient())
+        //     {
+        //         client.DownloadFile(url, destinationFile);
+        //     }
+
+        //     Console.WriteLine("[File downloaded successfully to " + destinationFile + "]", Color.BlueViolet);
+
+        //     // 
+
+        //     // starts the new file in notepad.. FOR NOW because its a txt testing file
+        //     // Process.Start("notepad.exe", destinationFile);
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine("An error occurred: " + ex.Message);
+        // }
 
         
         // Environment.Exit(0);

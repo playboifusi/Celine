@@ -17,7 +17,19 @@ Console.WriteLine(@"
                                                                                     
 ", Color.BlueViolet);
 
-// adds a version check. Version is on 
+// adds a version check. Version is on https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version.txt
+string versionUrl = "https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version.txt";
+string versionPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\celine-v1\\version.txt";
+string version = "0.0.1";
+string latestVersion = new WebClient().DownloadString(versionUrl);
+
+// Adds version string and matches it with the github link. if it doesnt match, it will display a message.
+if (version != latestVersion)
+{
+    Console.WriteLine("[A new version of Celine is available. Please update to the latest version.]", Color.Red);
+    Console.ReadKey();
+    Environment.Exit(0);
+}
 
 Console.WriteLine("[Welcome! Please wait while our bootstrapper runs..]", Color.BlueViolet);
 

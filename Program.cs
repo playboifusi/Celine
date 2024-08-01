@@ -17,6 +17,8 @@ Console.WriteLine(@"
                                                                                     
 ", Color.BlueViolet);
 
+// adds a version check. Version is on 
+
 Console.WriteLine("[Welcome! Please wait while our bootstrapper runs..]", Color.BlueViolet);
 
 // checks if roaming has data folder
@@ -196,7 +198,29 @@ if (logSettings == "true")
             Console.WriteLine("[Hidden Celex folder has not been detected]", Color.LimeGreen);
         }
 
-        
+        // adds a check for SolaraB2 folder in downloads and desktop
+        string downloadsFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads";
+        string desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string solaraFolder = "SolaraB2";
+        string solaraPathDownloads = Path.Combine(downloadsFolder, solaraFolder);
+        string solaraPathDesktop = Path.Combine(desktopFolder, solaraFolder);
+        if (Directory.Exists(solaraPathDownloads))
+        {
+            Console.WriteLine("[SolaraB2 folder has been detected in downloads]", Color.Red);
+        }
+        else
+        {
+            Console.WriteLine("[SolaraB2 folder has not been detected in downloads]", Color.LimeGreen);
+        }
+        if (Directory.Exists(solaraPathDesktop))
+        {
+            Console.WriteLine("[SolaraB2 folder has been detected on desktop]", Color.Red);
+        }
+        else
+        {
+            Console.WriteLine("[SolaraB2 folder has not been detected on desktop]", Color.LimeGreen);
+        }
+
         
         Console.WriteLine("\n[Please wait while BAM Tools Loads..]", Color.BlueViolet);
         // Goes to this a github link and downloads the .txt file

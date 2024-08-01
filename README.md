@@ -13,14 +13,12 @@
   <p align="center">
     Pc checking tool with no limits.
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/playboifusi/Celine/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/playboifusi/Celine/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -29,16 +27,16 @@
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/playboifusi/Celine.svg?style=for-the-badge
+[contributors-url]: https://github.com/playboifusi/Celine/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/playboifusi/Celine.svg?style=for-the-badge
+[forks-url]: https://github.com/playboifusi/Celine/network/members
+[stars-shield]: https://img.shields.io/github/stars/playboifusi/Celine.svg?style=for-the-badge
+[stars-url]: https://github.com/playboifusi/Celine/stargazers
+[issues-shield]: https://img.shields.io/github/issues/playboifusi/Celine.svg?style=for-the-badge
+[issues-url]: https://github.com/playboifusi/Celine/issues
+[license-shield]: https://img.shields.io/github/license/playboifusi/Celine.svg?style=for-the-badge
+[license-url]: https://github.com/playboifusi/Celine/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png

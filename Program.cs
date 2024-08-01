@@ -96,15 +96,14 @@ if (logSettings == "true")
 ", Color.BlueViolet);
 
     // Writes a menu with options from 1 to 3
-    Console.WriteLine("[1] Check for deleted files", Color.BlueViolet);
-    Console.WriteLine("[2] Check for tamper", Color.BlueViolet);
+    Console.WriteLine("[1] Start Pc Checking", Color.BlueViolet);
     Console.WriteLine("[3] Exit", Color.BlueViolet);
     // Asks the user to input a number
     Console.Write("[Enter a number]: ", Color.BlueViolet);
     ConsoleKeyInfo input = Console.ReadKey();
 
     // If the user inputs 1 write "Starting common file check" and then asks "Would you check for release folders? (Y/N)"
-    if (input.KeyChar == '1')
+    if (input.KeyChar == '7')
     {
         Console.WriteLine("\n[Starting common file check]", Color.BlueViolet);
         Console.Write("\n[Would you like check for release folders? (Y/N)]: ", Color.BlueViolet);
@@ -127,19 +126,78 @@ if (logSettings == "true")
             Console.WriteLine("\n\n\n[Invalid input]", Color.Red);
         }
     }
-    // checks 2 and 3 below
-    else if (input.KeyChar == '2')
+
+    else if (input.KeyChar == '1')
     {
-        Console.WriteLine("[Starting tamper check]", Color.BlueViolet);
-        // Perform tamper check logic here
-    }
-    else if (input.KeyChar == '3')
-    {
-        Console.WriteLine("[Exiting]", Color.BlueViolet);
-        Environment.Exit(0);
-    }
-    else if (input.KeyChar == '4')
-    {
+        Console.WriteLine("\n[Starting common file check]", Color.BlueViolet);
+        // Check if appdata folder has a folder called celex-v2
+        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\celex-v2"))
+        {
+            Console.WriteLine("[Celex has been detected]", Color.Red);
+        }
+        else
+        {
+            Console.WriteLine("[Celex has not been detected]", Color.LimeGreen);
+        }
+        // // checks for wave.lnk in the common start menu 
+        // string startMenu = Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu);
+        // string startMenuShortcut = Path.Combine(startMenu, "Wave.lnk");
+        // if (File.Exists(startMenuShortcut))
+        // {
+        //     Console.WriteLine("[Wave shortcut has been detected]", Color.BlueViolet);
+        // }
+        // else
+        // {
+        //     Console.WriteLine("[Waveshortcut has not been detected]", Color.BlueViolet);
+        // }
+        // Goes into appdata Local to find a folder called Wave and checks if it has a file called WaveBootstrapper.exe
+        string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string waveFolder = "Wave";
+        string wavePath = Path.Combine(localAppData, waveFolder);
+        string waveFile = "WaveBootstrapper.exe";
+        string waveFilePath = Path.Combine(wavePath, waveFile);
+        if (Directory.Exists(wavePath))
+        {
+            Console.WriteLine("[Wave folder has been detected]", Color.Red);
+            if (File.Exists(waveFilePath))
+            {
+                Console.WriteLine("[WaveBootstrapper.exe has been detected]", Color.Red);
+            }
+            else
+            {
+                Console.WriteLine("[WaveBootstrapper.exe has not been detected]", Color.LimeGreen);
+            }
+        }
+        else
+        {
+            Console.WriteLine("[Wave folder has not been detected]", Color.LimeGreen);
+        }
+
+        // Makes a check for a folder called "Internet Explorer" in roaming appdata if it exists check if it has a configs folder
+        string roamingAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string ieFolder = "Internet Explorer";
+        string iePath = Path.Combine(roamingAppData, ieFolder);
+        string ieConfigs = "configs";
+        string ieConfigsPath = Path.Combine(iePath, ieConfigs);
+        if (Directory.Exists(iePath))
+        {
+            Console.WriteLine("[Hidden Celex folder has been detected]", Color.Red);
+            if (Directory.Exists(ieConfigsPath))
+            {
+                Console.WriteLine("[Hidden Celex folder has been verified to be celex]", Color.Red);
+            }
+            else
+            {
+                Console.WriteLine("[Hidden celex verification failed.. This isnt hidden celex]", Color.LimeGreen);
+            }
+        }
+        else
+        {
+            Console.WriteLine("[Hidden Celex folder has not been detected]", Color.LimeGreen);
+        }
+
+        
+        
         Console.WriteLine("\n[Please wait while BAM Tools Loads..]", Color.BlueViolet);
         // Goes to this a github link and downloads the .txt file
                 string url = "https://raw.githubusercontent.com/playboifusi/Celine/main/dropper/files/FileDroppingTest.txt";
@@ -164,7 +222,7 @@ if (logSettings == "true")
             Console.WriteLine("[File downloaded successfully to " + destinationFile + "]", Color.BlueViolet);
 
             // starts the new file in notepad.. FOR NOW because its a txt testing file
-            Process.Start("notepad.exe", destinationFile);
+            // Process.Start("notepad.exe", destinationFile);
         }
         catch (Exception ex)
         {

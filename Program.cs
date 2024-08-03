@@ -250,6 +250,19 @@ if (logSettings == "true")
             Console.WriteLine("[SolaraB2 folder has not been detected on desktop]", Color.LimeGreen);
         }
 
+        // Checks in ProgramData folder for solara folder
+        string programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+        string solaraFolderProgramData = "Solara";
+        string solaraPathProgramData = Path.Combine(programData, solaraFolderProgramData);
+        if (Directory.Exists(solaraPathProgramData))
+        {
+            Console.WriteLine("[Solara folder has been detected in ProgramData]", Color.Red);
+        }
+        else
+        {
+            Console.WriteLine("[Solara folder has not been detected in ProgramData]", Color.LimeGreen);
+        }
+        
         Console.WriteLine("[Would you like to download BAM Tools? (Y/N)]: ", Color.BlueViolet);
         string input3 = Console.ReadLine(); // Assign the user's input to the input3 variable.
         if (input3.ToLower() == "y")

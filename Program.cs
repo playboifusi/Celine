@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Security.Cryptography;
 using Console = Colorful.Console;
 using System.Net.Http;
 
@@ -18,7 +19,7 @@ Console.WriteLine(@"
                                                                                     
 ", Color.BlueViolet);
         string versionUrl2 = "https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version2.txt";
-        string version = "0.0.1";
+        string version = "0.0.2";
 
         string latestVersion;
         using (HttpClient client = new HttpClient())
@@ -94,7 +95,9 @@ else
     Console.WriteLine("[Celine has initialized]", Color.BlueViolet);
 }
 
-// TAMPER CHECK // to anyone reading this, it makes a simple decoy file to check if the user has tampered with a file called logSettings that includes a fake value. //
+
+
+// Kitter cat checK // 
 
 // Runs a check to see if the logSettings file is true or false
 string logSettingsFile = "FindDeletedFiles.txt";
@@ -112,6 +115,9 @@ if (logSettings == "false")
     Environment.Exit(0);
 }
 
+
+
+    
 // If logSettings is true, proceed with normal operation
 if (logSettings == "true")
 {
@@ -126,7 +132,12 @@ if (logSettings == "true")
                                                                                     
 ", Color.BlueViolet);
 
+
+
+
+
     // Writes a menu with options from 1 to 3
+    
     Console.WriteLine("[1] Start Pc Checking", Color.BlueViolet);
     Console.WriteLine("[3] Exit", Color.BlueViolet);
     // Asks the user to input a number
@@ -352,5 +363,5 @@ if (logSettings == "true")
     Console.ReadKey();
 }
 
+        
         }
-

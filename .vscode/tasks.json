@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "dotnet build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "calculate-hash",
+            "type": "shell",
+            "command": "powershell -ExecutionPolicy Bypass -File \"${workspaceFolder}\\test.ps1\" \"${workspaceFolder}\\bin\\Debug\\net6.0\\Celine.dll\" \"${workspaceFolder}\\bin\\Debug\\net6.0\\hash.txt\"",
+            "dependsOn": "build",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -6,7 +6,6 @@
 <div align="center">
   <a href="https://github.com/playboifusi/Celine">
     <img src="Images/Untitled.png" alt="Logo" width="80" height="80">
-    <img src="https://github.com/user-attachments/assets/a80a0fd8-38b1-4b7c-ad82-7d4524df5827" alt="CelineUI">
   </a>
 
 <h3 align="center">Celine</h3>

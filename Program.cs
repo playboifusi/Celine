@@ -202,46 +202,56 @@
             });
         }
 
-        static void CheckCelex()
-        {
-            string celexPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "celex-v2");
-            Console.WriteLine(Directory.Exists(celexPath) ? "[Celex detected]" : "[Celex not detected]", Color.Red);
-        }
+static void CheckCelex()
+{
+    string celexPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "celex-v2");
+
+    if (Directory.Exists(celexPath))
+    {
+        Console.ForegroundColor = Color.Red;
+        Console.WriteLine("[Celex detected]");
+    }
+    else
+    {
+        Console.ForegroundColor = Color.Green;
+        Console.WriteLine("[Celex not detected]");
+    }
+}
 
         static void CheckWave()
         {
-            // Path for WaveInstaller.exe
-            string waveInstallerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "WaveInstaller.exe");
-            if (File.Exists(waveInstallerPath))
-            {
-                Console.WriteLine("[WaveInstaller.exe detected]", Color.Red);
-            }
-            else
-            {
-                Console.WriteLine("[WaveInstaller.exe not detected]", Color.LimeGreen);
-            }
+            // // Path for WaveInstaller.exe
+            // string waveInstallerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "WaveInstaller.exe");
+            // if (File.Exists(waveInstallerPath))
+            // {
+            //     Console.WriteLine("[WaveInstaller.exe detected]", Color.Red);
+            // }
+            // else
+            // {
+            //     Console.WriteLine("[WaveInstaller.exe not detected]", Color.LimeGreen);
+            // }
 
             // Path for the wave folder in AppData\Local
-            string waveFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "wave");
-            if (Directory.Exists(waveFolderPath))
-            {
-                Console.WriteLine("[Wave folder detected]", Color.Red);
+            // string waveFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "wave");
+            // if (Directory.Exists(waveFolderPath))
+            // {
+            //     Console.WriteLine("[Wave folder detected]", Color.Red);
 
-                // Check for wavebootstrapper inside wave folder
-                string waveBootstrapperPath = Path.Combine(waveFolderPath, "waveboostrapper.exe");
-                if (File.Exists(waveBootstrapperPath))
-                {
-                    Console.WriteLine("[Wave bootstrapper detected]", Color.Red);
-                }
-                else
-                {
-                    Console.WriteLine("[Wave bootstrapper not detected]", Color.LimeGreen);
-                }
-            }
-            else
-            {
-                Console.WriteLine("[Wave folder not detected]", Color.LimeGreen);
-            }
+            //     // Check for wavebootstrapper inside wave folder
+            //     string waveBootstrapperPath = Path.Combine(waveFolderPath, "waveboostrapper.exe");
+            //     if (File.Exists(waveBootstrapperPath))
+            //     {
+            //         Console.WriteLine("[Wave bootstrapper detected]", Color.Red);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("[Wave bootstrapper not detected]", Color.LimeGreen);
+            //     }
+            // }
+            // else
+            // {
+            //     Console.WriteLine("[Wave folder not detected]", Color.LimeGreen);
+            // }
 
             // Path for the Wave shortcut
             string waveShortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "Wave.lnk");
@@ -276,26 +286,60 @@
         }
 
 
-        static void CheckHiddenCelex()
-        {
-            string hiddenCelexPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Internet Explorer", "configs");
-            Console.WriteLine(Directory.Exists(hiddenCelexPath) ? "[Hidden Celex folder detected]" : "[Hidden Celex folder not detected]", Color.Red);
-        }
+static void CheckHiddenCelex()
+{
+    string hiddenCelexPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Internet Explorer", "configs");
 
-        static void CheckSolara()
-        {
-            string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string solaraFolder = "SolaraB2";
+    if (Directory.Exists(hiddenCelexPath))
+    {
+        Console.ForegroundColor = Color.Red;
+        Console.WriteLine("[Hidden Celex folder detected]");
+    }
+    else
+    {
+        Console.ForegroundColor = Color.LimeGreen;
+        Console.WriteLine("[Hidden Celex folder not detected]");
+    }
 
-            string solaraPathDownloads = Path.Combine(downloadsPath, solaraFolder);
-            string solaraPathDesktop = Path.Combine(desktopPath, solaraFolder);
-            Console.WriteLine(Directory.Exists(solaraPathDownloads) ? "[SolaraB2 folder in Downloads detected]" : "[SolaraB2 folder in Downloads not detected]", Color.Red);
-            Console.WriteLine(Directory.Exists(solaraPathDesktop) ? "[SolaraB2 folder on Desktop detected]" : "[SolaraB2 folder on Desktop not detected]", Color.Red);
+}
 
-            string programDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Solara");
-            Console.WriteLine(Directory.Exists(programDataPath) ? "[Solara folder in ProgramData detected]" : "[Solara folder in ProgramData not detected]", Color.Red);
-        }
+static void CheckSolara()
+{
+    string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    string solaraFolder = "SolaraB2";
+
+    string solaraPathDownloads = Path.Combine(downloadsPath, solaraFolder);
+    string solaraPathDesktop = Path.Combine(desktopPath, solaraFolder);
+    string programDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Solara");
+
+    if (Directory.Exists(solaraPathDownloads))
+    {
+        Console.WriteLine("[SolaraB2 folder in Downloads detected]", Color.Red);
+    }
+    else
+    {
+        Console.WriteLine("[SolaraB2 folder in Downloads not detected]", Color.Green);
+    }
+
+    if (Directory.Exists(solaraPathDesktop))
+    {
+        Console.WriteLine("[SolaraB2 folder on Desktop detected]", Color.Red);
+    }
+    else
+    {
+        Console.WriteLine("[SolaraB2 folder on Desktop not detected]", Color.Green);
+    }
+
+    if (Directory.Exists(programDataPath))
+    {
+        Console.WriteLine("[Solara folder in ProgramData detected]", Color.Red);
+    }
+    else
+    {
+        Console.WriteLine("[Solara folder in ProgramData not detected]", Color.Green);
+    }
+}
 
         static async Task DownloadBamTools()
         {

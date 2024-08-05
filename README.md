@@ -15,6 +15,8 @@
     <br />
     <br />
     <br />
+    ![image](https://github.com/user-attachments/assets/a80a0fd8-38b1-4b7c-ad82-7d4524df5827)
+    ·  
     ·
     <a href="https://github.com/playboifusi/Celine/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·

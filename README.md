@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://hichnefu.sirv.com/Untitled.png" alt="Celine" />
+  <img src="https://hichnefu.sirv.com/Untitled.png" alt="Celine" width="80" height="80"/>
   <h1>Celine</h1>
   <p>
     Pc checking tool with no limits.

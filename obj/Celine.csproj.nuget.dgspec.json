@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\luis\\Documents\\Celine\\Celine.csproj": {}
+    "C:\\Users\\fusi\\Documents\\GIT\\Celine\\Celine.csproj": {}
   },
   "projects": {
-    "C:\\Users\\luis\\Documents\\Celine\\Celine.csproj": {
+    "C:\\Users\\fusi\\Documents\\GIT\\Celine\\Celine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\luis\\Documents\\Celine\\Celine.csproj",
+        "projectUniqueName": "C:\\Users\\fusi\\Documents\\GIT\\Celine\\Celine.csproj",
         "projectName": "Celine",
-        "projectPath": "C:\\Users\\luis\\Documents\\Celine\\Celine.csproj",
-        "packagesPath": "C:\\Users\\luis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\luis\\Documents\\Celine\\obj\\",
+        "projectPath": "C:\\Users\\fusi\\Documents\\GIT\\Celine\\Celine.csproj",
+        "packagesPath": "C:\\Users\\fusi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\fusi\\Documents\\GIT\\Celine\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\luis\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\fusi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,32 +32,15 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "AntiVirusScanner": {
-              "target": "Package",
-              "version": "[1.0.2, )"
-            },
             "Colorful.Console": {
               "target": "Package",
               "version": "[1.2.15, )"
-            },
-            "Microsoft.Windows.Compatibility": {
-              "target": "Package",
-              "version": "[8.0.7, )"
-            },
-            "System.Management": {
-              "target": "Package",
-              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -77,30 +54,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.32, 6.0.32]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.32, 6.0.32]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.32, 6.0.32]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.32, 6.0.32]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.424\\RuntimeIdentifierGraph.json"
         }
       }
     }

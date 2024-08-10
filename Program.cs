@@ -1,81 +1,106 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
-using System.Threading;
-using System.Threading.Tasks;
-using Console = Colorful.Console;
-using System.Drawing;
-using System.Diagnostics;
-using System.Net.Http;
+﻿    using System;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.IO;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Console = Colorful.Console;
 
-public class Program
-{
-    private static readonly string[] SuspiciousFolderNames = { "Temp", "Hidden", "$$Recycle.Bin" };
-    private static long _scannedFiles = 0;
-    private static long _totalFiles = 0;
-    private static bool _scanComplete = false;
-    private static readonly Stopwatch _stopwatch = new Stopwatch();
-
-    static async Task Main(string[] args)
+    class Program
     {
-        if (!IsAdministrator())
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("[Error: Please run the program as an administrator.]", Color.Red);
-            return;
+            Console.Title = "Celine-v1";
+            Console.Clear();  // Clear console before starting
+
+            DisplayHeader();  // Call to print header
+
+            string versionUrl = "https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version2.txt";
+            string currentVersion = "0.0.2";
+
+            string latestVersion = await CheckVersionAsync(versionUrl);
+            if (latestVersion == null)
+            {
+                Console.WriteLine("[Error: Unable to check for updates. Exiting...]", Color.Red);
+                return;
+            }
+
+            if (currentVersion != latestVersion)
+            {
+                Console.WriteLine("[A new version of Celine is available. Update required.]", Color.Red);
+                Console.ResetColor();
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine("[Welcome! Bootstrapping in progress..]", Color.BlueViolet);
+                Thread.Sleep(10000);
+            }
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string celinePath = Path.Combine(appDataPath, "celine-v1");
+
+            if (Directory.Exists(celinePath))
+            {
+                Console.WriteLine("[Welcome back]", Color.BlueViolet);
+                Thread.Sleep(5000);
+            }
+            else
+            {
+                Console.WriteLine("[Initializing Celine...]", Color.BlueViolet);
+                InitializeDirectories(celinePath);
+                Console.WriteLine("[Initialization complete]", Color.BlueViolet);
+                Thread.Sleep(2000);
+            }
+
+            string logSettingsFilePath = Path.Combine(celinePath, "logSettings", "FindDeletedFiles.txt");
+            string logSettings = File.ReadAllText(logSettingsFilePath);
+
+            if (logSettings == "false")
+            {
+                Console.Clear();
+                Console.Title = "Tamper Check Failed";
+                Console.WriteLine("[Tamper check failed. Action needed.]", Color.Red);
+                Console.WriteLine("[Recommended: Ban or blacklist user.]", Color.Red);
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+
+            if (logSettings == "true")
+            {
+                await PerformFileCheckAsync();  // Await async method
+            }
         }
 
-        Console.Title = "Celine-v2";
-        Console.Clear();
-        DisplayHeader();
-
-        string latestVersion = await CheckVersionAsync("https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version2.txt");
-
-        if (latestVersion == null || latestVersion != "0.0.2")
+        static async Task<string> CheckVersionAsync(string url)
         {
-            Console.WriteLine("[Error: Update required. Exiting...]", Color.Red);
-            return;
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string version = await client.GetStringAsync(url);
+                    return version?.Trim();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Error: {ex.Message}]", Color.Red);
+                    return null;
+                }
+            }
         }
 
-        string celinePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "celine-v2");
-        InitializeDirectories(celinePath);
-
-        Console.WriteLine("[Initializing Scan...]", Color.BlueViolet);
-        Thread.Sleep(1500); // wait for 1.5 seconds cool ig
-
-        _stopwatch.Start();
-
-        var cancellationTokenSource = new CancellationTokenSource();
-        var rotatingIndicatorTask = ShowRotatingIndicatorAsync(cancellationTokenSource.Token);
-
-        await PerformFileCheckAsync(celinePath, cancellationTokenSource.Token);
-
-        _scanComplete = true;
-        cancellationTokenSource.Cancel();
-        await rotatingIndicatorTask;
-
-        _stopwatch.Stop();
-    }
-
-    static bool IsAdministrator()
-    {
-        var identity = WindowsIdentity.GetCurrent();
-        var principal = new WindowsPrincipal(identity);
-        return principal.IsInRole(WindowsBuiltInRole.Administrator);
-    }
-
-    static void DisplayHeader()
-    {
-        string asciiArt = @"
+        static void DisplayHeader()
+        {
+            string asciiArt = @"
     ╔════════════════════════════════════════╗
     ║@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@║
     ║@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@║
     ║@@@@@@@@@@@@@@@@@@@@@@@@@@&##&@@@@@@@@@@║
     ║@@@@@@@@@@@@@@@@#BGGGBB&@@&BPGGPB@@@@@@@║
     ║@@@@@@@@@@@@@@BPPGGGGGGGGBP5PGPB@@@@@@@@║
-    ║@@@@@@@@@@@@#PP5PGPGGGGGGPPPPP@@@@@@@@@@║
+    ║@@@@@@@@@@@@#PP5PGPGPGGGGGPPPPP@@@@@@@@@║
     ║@@@@@@@@@@@BPP5PPP#@GPGGGGGPPB@@@@@@@@@@║
     ║@@@@@@@@@@BPP5PPP&@@&5GGGGPP&@@@@@@@@@@@║
     ║@@@@@@@@@#5PPPPP@@@@@PPPPP5B@@@@@@@@@@@@║
@@ -89,211 +114,273 @@ public class Program
     ║@@@@@@@@@@@@@&#BBGGGGB#@@@@@@@@@@@@@@@@@║
     ║@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@║
     ╚════════════════════════════════════════╝
+
     ";
 
-        var headerColor = Color.BlueViolet;
-        var asciiColor = Color.BlueViolet;
+            var headerColor = Color.BlueViolet;
+            var asciiColor = Color.BlueViolet;
 
-        Console.WriteLine($@"
-╔═════════════════════════════════════════╗
-║ Owner  : Opium | zyna                   ║
-║ GitHub : https://github.com/playboifusi ║
-║ Version: 0.0.2                          ║
-╚═════════════════════════════════════════╝
-", headerColor);
-        Console.WriteLine();
-        PrintCentered(asciiArt, asciiColor);
-    }
+            Header header = new Header
+            {
+                Owner = "Opium",
+                GitHub = "https://github.com/playboifusi/Celine",
+                Version = "0.0.2"
+            };
 
-    static void PrintCentered(string text, Color color)
-    {
-        int consoleWidth = Console.WindowWidth;
-        foreach (var line in text.Split('\n'))
-        {
-            string trimmedLine = line.Trim();
-            if (string.IsNullOrEmpty(trimmedLine)) continue;
-            int leftPadding = (consoleWidth - trimmedLine.Length) / 2;
-            Console.WriteLine(new string(' ', leftPadding) + trimmedLine, color);
+            Console.WriteLine(header.Generate(), headerColor);
+            Console.WriteLine();
+            PrintCentered(asciiArt, asciiColor);
         }
-    }
 
-    static void InitializeDirectories(string path)
-    {
-        Directory.CreateDirectory(path);
-        Directory.CreateDirectory(Path.Combine(path, "logSettings"));
-        File.WriteAllText(Path.Combine(path, "logSettings", "FindDeletedFiles.txt"), "true");
-    }
-
-    static async Task<string?> CheckVersionAsync(string url)
-    {
-        using (HttpClient client = new HttpClient())
+        static void PrintCentered(string text, Color color)
         {
-            try
+            int consoleWidth = Console.WindowWidth;
+            foreach (var line in text.Split('\n'))
             {
-                string version = await client.GetStringAsync(url);
-                return version?.Trim();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Error: {ex.Message}]", Color.Red);
-                return null;
+                string trimmedLine = line.Trim();
+                if (string.IsNullOrEmpty(trimmedLine)) continue; // Skip empty lines
+                int leftPadding = (consoleWidth - trimmedLine.Length) / 2;
+                Console.WriteLine(new string(' ', leftPadding) + trimmedLine, color);
             }
         }
-    }
 
-    static async Task PerformFileCheckAsync(string celinePath, CancellationToken cancellationToken)
-    {
-        string logFileName = $"Log_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
-        string logFilePath = Path.Combine(celinePath, logFileName);
-
-        var logEntries = new ConcurrentBag<string>();
-
-        var directoriesToScan = new[]
+        static void InitializeDirectories(string path)
         {
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)),
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)),
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"),
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents")
-        };
+            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(Path.Combine(path, "integrity"));
+            Directory.CreateDirectory(Path.Combine(path, "logSettings"));
 
-        _totalFiles = await CountTotalFilesAsync(directoriesToScan);
-
-        var scanTasks = directoriesToScan.Select(dir => ScanDirectoryAsync(dir, logEntries, cancellationToken)).ToArray();
-
-        await Task.WhenAll(scanTasks);
-
-        try
-        {
-            await File.WriteAllLinesAsync(logFilePath, logEntries);
-            Console.WriteLine($"[Scan Complete, Find results at {logFilePath}]", Color.BlueViolet);
+            string filePath = Path.Combine(path, "logSettings", "FindDeletedFiles.txt");
+            File.WriteAllText(filePath, "true");
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[Error writing log file: {ex.Message}]", Color.Red);
-        }
-    }
 
-    static async Task<long> CountTotalFilesAsync(string[] directories)
-    {
-        long total = 0;
-        foreach (var dir in directories)
-        {
-            total += await CountFilesInDirectoryAsync(dir);
-        }
-        return total;
-    }
 
-    static async Task<long> CountFilesInDirectoryAsync(string directory)
-    {
-        long count = 0;
-        try
+        static async Task PerformFileCheckAsync()
         {
-            count += Directory.GetFiles(directory, "*.*", SearchOption.TopDirectoryOnly).Length;
-            foreach (var subDir in Directory.GetDirectories(directory))
+            Console.WriteLine("[Initiating file check]", Color.BlueViolet);
+            Thread.Sleep(5000);
+
+            CheckCelex();
+            CheckWave(); // Updated method
+            CheckHiddenCelex();
+            CheckSolara();
+            CheckBootstrapper();
+
+            Console.WriteLine("[Download BAM Tools? (Y/N)]: ", Color.BlueViolet);
+            string response = Console.ReadLine();
+            if (response?.ToLower() == "y")
             {
-                count += await CountFilesInDirectoryAsync(subDir);
+                await DownloadBamTools();  // Await async method
+            }
+            else if (response?.ToLower() == "n")
+            {
+                Console.WriteLine("[Download skipped]", Color.BlueViolet);
+            }
+            else
+            {
+                Console.WriteLine("[Invalid response]", Color.Red);
             }
         }
-        catch (UnauthorizedAccessException) { }
-        catch (Exception) { }
-        return count;
-    }
 
-    static async Task ScanDirectoryAsync(string directory, ConcurrentBag<string> logEntries, CancellationToken cancellationToken)
-    {
-        try
+        static async Task CheckFoldersAsync()
         {
-            foreach (var file in Directory.EnumerateFiles(directory, "*.*", SearchOption.TopDirectoryOnly))
+            // Check for different folders
+            await Task.Run(() => 
             {
-                if (cancellationToken.IsCancellationRequested) return;
+                CheckCelex();
+                CheckHiddenCelex();
+                CheckSolara();
+            });
+        }
 
-                Interlocked.Increment(ref _scannedFiles);
-                
-                FileInfo fileInfo = new FileInfo(file);
-                
-                // Check file size
-                if (fileInfo.Length > 100 * 1024 * 1024) // larger than 100 MB
-                {
-                    logEntries.Add($"[LARGE FILE] {file} - Size: {fileInfo.Length / (1024 * 1024)} MB");
-                }
-
-                // Check file extension
-                string extension = Path.GetExtension(file).ToLower();
-                if (new[] { ".exe", ".dll", ".bat" }.Contains(extension))
-                {
-                    logEntries.Add($"[EXECUTABLE] {file}");
-                }
-
-                // Check for hidden files
-                if ((fileInfo.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
-                {
-                    logEntries.Add($"[HIDDEN] {file}");
-                }
-
-                // Check file creation and modification times
-                if (fileInfo.CreationTime > DateTime.Now.AddDays(-7) || 
-                    fileInfo.LastWriteTime > DateTime.Now.AddDays(-7))
-                {
-                    logEntries.Add($"[RECENT] {file} - Created: {fileInfo.CreationTime}, Modified: {fileInfo.LastWriteTime}");
-                }
-
-                // Check for suspicious file names
-                string fileName = Path.GetFileName(file).ToLower();
-                if (fileName.Contains("cheat") || fileName.Contains("loader") || fileName.Contains("installer") || fileName.Contains("map"))
-                {
-                    logEntries.Add($"[SUSPICIOUS] {file}");
-                }
-            }
-
-            foreach (var subDir in Directory.EnumerateDirectories(directory))
+        static async Task CheckShortcutsAsync()
+        {
+            // Check for different shortcuts
+            await Task.Run(() => 
             {
-                if (cancellationToken.IsCancellationRequested) return;
-
-                string folderName = Path.GetFileName(subDir);
-                if (SuspiciousFolderNames.Contains(folderName))
-                {
-                    logEntries.Add($"[SUSPICIOUS FOLDER] {subDir}");
-                }
-
-                await ScanDirectoryAsync(subDir, logEntries, cancellationToken);
-            }
+                CheckWave();  // Perform shortcut checks
+            });
         }
-        catch (UnauthorizedAccessException)
-        {
-            logEntries.Add($"[ACCESS DENIED] {directory}");
-        }
-        catch (Exception ex)
-        {
-            logEntries.Add($"[ERROR] {directory} - {ex.Message}");
-        }
-    }
 
-    static async Task ShowRotatingIndicatorAsync(CancellationToken cancellationToken)
+static void CheckCelex()
+{
+    string celexPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "celex-v2");
+
+    if (Directory.Exists(celexPath))
     {
-        var spinner = new[] { '|', '/', '-', '\\' };
-        int counter = 0;
-
-        Console.CursorVisible = false;
-        Console.Write(new string(' ', Console.WindowWidth)); // Clear the line
-        Console.SetCursorPosition(0, Console.CursorTop);
-
-        while (!cancellationToken.IsCancellationRequested && !_scanComplete)
-        {
-            long scannedFiles = Interlocked.Read(ref _scannedFiles);
-            double progress = _totalFiles > 0 ? (double)scannedFiles / _totalFiles * 100 : 0;
-            double speed = _stopwatch.Elapsed.TotalSeconds > 0 ? scannedFiles / _stopwatch.Elapsed.TotalSeconds : 0;
-            TimeSpan estimatedTimeRemaining = speed > 0 ? TimeSpan.FromSeconds((_totalFiles - scannedFiles) / speed) : TimeSpan.Zero;
-
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write($"[{spinner[counter % spinner.Length]}] Scanning {progress:0.00}% - Files Scanned: {scannedFiles}/{_totalFiles}, Scan Speed: {speed:0.00} files/s, Estimated Time Remaining: {estimatedTimeRemaining:hh\\:mm\\:ss}|");
-
-            counter++;
-            await Task.Delay(100);
-        }
-
-        Console.SetCursorPosition(0, Console.CursorTop);
-        Console.WriteLine($"[/] Scan Complete - Total Files Scanned: {_scannedFiles}/{_totalFiles}, Time Elapsed: {_stopwatch.Elapsed.TotalSeconds:0.00} seconds");
-        Console.CursorVisible = true;
+        Console.ForegroundColor = Color.Red;
+        Console.WriteLine("[Celex detected]");
+    }
+    else
+    {
+        Console.ForegroundColor = Color.Green;
+        Console.WriteLine("[Celex not detected]");
     }
 }
+
+        static void CheckWave()
+        {
+            // // Path for WaveInstaller.exe
+            // string waveInstallerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "WaveInstaller.exe");
+            // if (File.Exists(waveInstallerPath))
+            // {
+            //     Console.WriteLine("[WaveInstaller.exe detected]", Color.Red);
+            // }
+            // else
+            // {
+            //     Console.WriteLine("[WaveInstaller.exe not detected]", Color.LimeGreen);
+            // }
+
+            // Path for the wave folder in AppData\Local
+            // string waveFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "wave");
+            // if (Directory.Exists(waveFolderPath))
+            // {
+            //     Console.WriteLine("[Wave folder detected]", Color.Red);
+
+            //     // Check for wavebootstrapper inside wave folder
+            //     string waveBootstrapperPath = Path.Combine(waveFolderPath, "waveboostrapper.exe");
+            //     if (File.Exists(waveBootstrapperPath))
+            //     {
+            //         Console.WriteLine("[Wave bootstrapper detected]", Color.Red);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("[Wave bootstrapper not detected]", Color.LimeGreen);
+            //     }
+            // }
+            // else
+            // {
+            //     Console.WriteLine("[Wave folder not detected]", Color.LimeGreen);
+            // }
+
+            // Path for the Wave shortcut
+            string waveShortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "Wave.lnk");
+            if (File.Exists(waveShortcutPath))
+            {
+                Console.WriteLine("[Wave shortcut detected]", Color.Red);
+            }
+            else
+            {
+                Console.WriteLine("[Wave shortcut not detected]", Color.LimeGreen);
+            }
+        }
+
+        static void CheckBootstrapper()
+        {
+            // Path for common bootstrapper files
+            string bootstrapperPath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "bootstrapper.exe");
+            string bootstrapperPath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "bootstrapper.exe");
+
+            if (File.Exists(bootstrapperPath1))
+            {
+                Console.WriteLine("[Bootstrapper detected in AppData]", Color.Red);
+            }
+            else if (File.Exists(bootstrapperPath2))
+            {
+                Console.WriteLine("[Bootstrapper detected in LocalAppData]", Color.Red);
+            }
+            else
+            {
+                Console.WriteLine("[Bootstrapper not detected]", Color.LimeGreen);
+            }
+        }
+
+
+static void CheckHiddenCelex()
+{
+    string hiddenCelexPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Internet Explorer", "configs");
+
+    if (Directory.Exists(hiddenCelexPath))
+    {
+        Console.ForegroundColor = Color.Red;
+        Console.WriteLine("[Hidden Celex folder detected]");
+    }
+    else
+    {
+        Console.ForegroundColor = Color.LimeGreen;
+        Console.WriteLine("[Hidden Celex folder not detected]");
+    }
+
+}
+
+static void CheckSolara()
+{
+    string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    string solaraFolder = "SolaraB2";
+
+    string solaraPathDownloads = Path.Combine(downloadsPath, solaraFolder);
+    string solaraPathDesktop = Path.Combine(desktopPath, solaraFolder);
+    string programDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Solara");
+
+    if (Directory.Exists(solaraPathDownloads))
+    {
+        Console.WriteLine("[SolaraB2 folder in Downloads detected]", Color.Red);
+    }
+    else
+    {
+        Console.WriteLine("[SolaraB2 folder in Downloads not detected]", Color.Green);
+    }
+
+    if (Directory.Exists(solaraPathDesktop))
+    {
+        Console.WriteLine("[SolaraB2 folder on Desktop detected]", Color.Red);
+    }
+    else
+    {
+        Console.WriteLine("[SolaraB2 folder on Desktop not detected]", Color.Green);
+    }
+
+    if (Directory.Exists(programDataPath))
+    {
+        Console.WriteLine("[Solara folder in ProgramData detected]", Color.Red);
+    }
+    else
+    {
+        Console.WriteLine("[Solara folder in ProgramData not detected]", Color.Green);
+    }
+}
+
+        static async Task DownloadBamTools()
+        {
+            string url = "https://github.com/playboifusi/Celine/raw/main/dropper/files/bam-tool.exe";
+            string destinationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "celine-v1", "bam-tool.exe");
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    byte[] fileBytes = await client.GetByteArrayAsync(url);
+                    await File.WriteAllBytesAsync(destinationPath, fileBytes);
+                    Console.WriteLine("[File downloaded to: " + destinationPath + "]", Color.BlueViolet);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Error: {ex.Message}]", Color.Red);
+                }
+            }
+        }
+    }
+
+    class Header
+    {
+        public string Owner { get; set; } = "Unknown";
+        public string GitHub { get; set; } = "Unknown";
+        public string Version { get; set; } = "Unknown";
+
+        public string Generate()
+        {
+            int width = Console.WindowWidth - 2;
+            string ownerPart = $"• Owner: {Owner}".PadLeft(width / 2 + $"• Owner: {Owner}".Length / 2);
+            string contributorsPart = "• Contributors: zynrax.".PadLeft(width / 2 + "• Contributors: zynrax".Length / 2);
+            string githubPart = $"• GitHub: {GitHub}".PadLeft(width / 2 + $"• GitHub: {GitHub}".Length / 2);
+            string versionPart = $"• Version: {Version}".PadLeft(width / 2 + $"• Version: {Version}".Length / 2);
+
+            return $@"
+    {ownerPart}
+    {contributorsPart}
+    {githubPart}
+    {versionPart}
+    ";
+        }
+    }

@@ -1,0 +1,12 @@
+name: discord-webhook
+
+on: [push]
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send Discord Notification
+      uses: johnnyhuy/actions-discord-git-webhook@v1.0.1
+      with:
+        webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}

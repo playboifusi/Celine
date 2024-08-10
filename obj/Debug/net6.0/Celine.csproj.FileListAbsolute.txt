@@ -14,7 +14,6 @@ C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.pdb
 C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.genruntimeconfig.cache
 C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\ref\Celine.dll
 C:\Users\fusi\Documents\GIT\Celine\bin\Debug\net6.0\Colorful.Console.dll
-C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.csproj.CopyComplete
 C:\Users\luis\Documents\Celine\bin\Debug\net6.0\Celine.exe
 C:\Users\luis\Documents\Celine\bin\Debug\net6.0\Celine.deps.json
 C:\Users\luis\Documents\Celine\bin\Debug\net6.0\Celine.runtimeconfig.json
@@ -33,3 +32,5 @@ C:\Users\luis\Documents\Celine\obj\Debug\net6.0\refint\Celine.dll
 C:\Users\luis\Documents\Celine\obj\Debug\net6.0\Celine.pdb
 C:\Users\luis\Documents\Celine\obj\Debug\net6.0\Celine.genruntimeconfig.cache
 C:\Users\luis\Documents\Celine\obj\Debug\net6.0\ref\Celine.dll
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.sourcelink.json
+C:\Users\fusi\Documents\GIT\Celine\obj\Debug\net6.0\Celine.csproj.Up2Date

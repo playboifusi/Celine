@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Celine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+248f1cce26260b0d99d72b2cd0f9f6ea7ab7d549")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+04801c3c22e626589db1eb8b0630e7a435cb1a94")]
 [assembly: System.Reflection.AssemblyProductAttribute("Celine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Celine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

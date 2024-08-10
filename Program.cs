@@ -36,7 +36,7 @@
             else
             {
                 Console.WriteLine("[Welcome! Bootstrapping in progress..]", Color.BlueViolet);
-                Thread.Sleep(10000);
+                // Thread.Sleep(10000);
             }
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -45,14 +45,14 @@
             if (Directory.Exists(celinePath))
             {
                 Console.WriteLine("[Welcome back]", Color.BlueViolet);
-                Thread.Sleep(5000);
+                // Thread.Sleep(5000);
             }
             else
             {
                 Console.WriteLine("[Initializing Celine...]", Color.BlueViolet);
                 InitializeDirectories(celinePath);
                 Console.WriteLine("[Initialization complete]", Color.BlueViolet);
-                Thread.Sleep(2000);
+                // Thread.Sleep(2000);
             }
 
             string logSettingsFilePath = Path.Combine(celinePath, "logSettings", "FindDeletedFiles.txt");
@@ -122,9 +122,10 @@
 
             Header header = new Header
             {
-                Owner = "Opium",
+                Owner = "Opium.sh, zynrax",
                 GitHub = "https://github.com/playboifusi/Celine",
-                Version = "0.0.2"
+                Discord = "https://discord.gg/TCP4dQJQmS",
+                Version = "0.0.3"
             };
 
             Console.WriteLine(header.Generate(), headerColor);
@@ -165,6 +166,7 @@
             CheckHiddenCelex();
             CheckSolara();
             CheckBootstrapper();
+            CheckMooze(); // New method
 
             Console.WriteLine("[Download BAM Tools? (Y/N)]: ", Color.BlueViolet);
             string response = Console.ReadLine();
@@ -286,6 +288,21 @@ static void CheckCelex()
         }
 
 
+        static void CheckMooze()
+        {
+            
+            string razerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Razer Synapse 3 Host");
+            if (Directory.Exists(razerPath))
+            {
+                Console.WriteLine("[Mooze detected]", Color.Red);
+            }
+            else
+            {
+                Console.WriteLine("[Mooze not detected]", Color.LimeGreen);
+            }
+        }
+
+
 static void CheckHiddenCelex()
 {
     string hiddenCelexPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Internet Explorer", "configs");
@@ -367,17 +384,19 @@ static void CheckSolara()
         public string Owner { get; set; } = "Unknown";
         public string GitHub { get; set; } = "Unknown";
         public string Version { get; set; } = "Unknown";
-
+        public string Discord { get; set; } = "Unknown";
         public string Generate()
         {
             int width = Console.WindowWidth - 2;
-            string ownerPart = $"• Owner: {Owner}".PadLeft(width / 2 + $"• Owner: {Owner}".Length / 2);
-            string contributorsPart = "• Contributors: zynrax.".PadLeft(width / 2 + "• Contributors: zynrax".Length / 2);
+            string ownerPart = $"• Owners: {Owner}".PadLeft(width / 2 + $"• Owners: {Owner}".Length / 2);
+            string contributorsPart = "• Contributors: sygzx.".PadLeft(width / 2 + "• Contributors: sygzx".Length / 2);
             string githubPart = $"• GitHub: {GitHub}".PadLeft(width / 2 + $"• GitHub: {GitHub}".Length / 2);
             string versionPart = $"• Version: {Version}".PadLeft(width / 2 + $"• Version: {Version}".Length / 2);
+            string discordPart = $"• Discord: {Discord}".PadLeft(width / 2 + $"• Discord: {Discord}".Length / 2);
 
             return $@"
     {ownerPart}
+    {discordPart}
     {contributorsPart}
     {githubPart}
     {versionPart}

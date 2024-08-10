@@ -17,7 +17,7 @@
             DisplayHeader();  // Call to print header
 
             string versionUrl = "https://raw.githubusercontent.com/playboifusi/Celine/main/bin2/version2.txt";
-            string currentVersion = "0.0.2";
+            string currentVersion = "0.0.3";
 
             string latestVersion = await CheckVersionAsync(versionUrl);
             if (latestVersion == null)
